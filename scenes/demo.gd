@@ -8,7 +8,7 @@ signal data_received(data)
 # The user must have these programs installed for this to work.
 const dependencies = PoolStringArray(['which', 'socat', 'bash'])
 const host = '127.0.0.1'
-const port = 7154
+const port = 1778
 
 # Enable recording of all data send to the psuedoterminal master.
 # This is useful if you want to record a session if you are trying
@@ -50,6 +50,7 @@ func _ready():
 	# Connect the Terminal and StreamPeer.
 	$Terminal.connect('output', self, 'send_data')
 	connect("data_received", $Terminal, "write")
+	$Terminal.grab_focus()
 	
 	connect("resized", self, "_resize_terminal")
 	_resize_terminal()

@@ -20,10 +20,13 @@ __meta__ = {
 anchor_right = 1.0
 anchor_bottom = 1.0
 rect_min_size = Vector2( 600, 400 )
+focus_mode = 2
 script = ExtResource( 2 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
+cols = 113.0
+rows = 26.0
 auto_resize = true
 font_family = {
 "bold": ExtResource( 6 ),
@@ -33,6 +36,7 @@ font_family = {
 }
 line_height = 1.15
 colors = {
+"background": Color( 0.180392, 0.203922, 0.211765, 1 ),
 "black": Color( 0.180392, 0.203922, 0.211765, 1 ),
 "blue": Color( 0.203922, 0.396078, 0.643137, 1 ),
 "bright_black": Color( 0.333333, 0.341176, 0.32549, 1 ),
@@ -44,6 +48,7 @@ colors = {
 "bright_white": Color( 0.933333, 0.933333, 0.92549, 1 ),
 "bright_yellow": Color( 0.988235, 0.913725, 0.309804, 1 ),
 "cyan": Color( 0.0235294, 0.596078, 0.603922, 1 ),
+"foreground": Color( 0.827451, 0.843137, 0.811765, 1 ),
 "green": Color( 0.305882, 0.603922, 0.0235294, 1 ),
 "magenta": Color( 0.458824, 0.313726, 0.482353, 1 ),
 "red": Color( 0.8, 0, 0, 1 ),
