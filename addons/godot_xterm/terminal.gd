@@ -97,6 +97,8 @@ export var allow_proposed_api = true
 export var allow_transparency = false
 export var tab_stop_width = 8
 export var colors: Dictionary = {
+	"background": Color("#2e3436"),
+	"foreground": Color("#d3d7cf"),
 	"black": Color("#2e3436"),
 	"red": Color("#cc0000"),
 	"green": Color("#4e9a06"),
@@ -141,6 +143,7 @@ var _scaled_cell_height
 var _scaled_char_top
 var _scaled_char_left
 var _work_cell = CellData.new()
+var _blinking = false
 var _blink_on = false
 var _time_since_last_blink = 0
 
@@ -178,6 +181,7 @@ func _refresh_rows(start_row = 0, end_row = 0):
 
 
 func _input(event):
+	return
 	if event is InputEventKey and event.pressed:
 		var data = PoolByteArray([])
 		accept_event()
@@ -310,14 +314,17 @@ func scroll(erase_attr, is_wrapped: bool = false) -> void:
 
 
 func _process(delta):
-	_time_since_last_blink += delta
-	if _time_since_last_blink > BLINK_INTERVAL:
-		_blink_on = not _blink_on
-		_time_since_last_blink = 0
-		update()
+	if _blinking:
+		_time_since_last_blink += delta
+		if _time_since_last_blink > BLINK_INTERVAL:
+			_blink_on = not _blink_on
+			_time_since_last_blink = 0
+			update()
 
 
 func _draw():
+	_blinking = false # Only enable blinking if we encounter a blinking cell.
+
 	# Draw the background and foreground
 	if _buffer_service == null:
 		return
@@ -341,11 +348,13 @@ func _draw():
 			elif _work_cell.is_bg_palette():
 				bg_color = _color_manager.colors.ansi[_work_cell.get_bg_color()]
 			else:
-				bg_color = _color_manager.colors.background
+				#bg_color = Color(rand_range(0, 1), rand_range(0, 1), rand_range(0, 1)) 
+				bg_color = colors.background
 			
-			draw_rect(Rect2(x * _scaled_cell_width, y * _scaled_cell_height,
-					(cols - x) * _scaled_cell_width, 1 * _scaled_cell_height),
-					bg_color)
+			#draw_rect(Rect2(x * _scaled_cell_width, y * _scaled_cell_height,
+			#		(cols - x) * _scaled_cell_width, 1 * _scaled_cell_height),
+			#		bg_color)
+			draw_rect(Rect2(x * _scaled_cell_width, y * _scaled_cell_height, _scaled_cell_width, _scaled_cell_height), bg_color)
 			
 			# Foreground
 			# Don't draw if cell is invisible
@@ -353,8 +362,10 @@ func _draw():
 				continue
 			
 			# Don't draw if cell is blink and blink is off
-			if _work_cell.is_blink() and not _blink_on:
-				continue
+			if _work_cell.is_blink():
+				_blinking = true
+				if not _blink_on:
+					continue
 			
 			# Get the foreground color
 			# TODO: handle inverse min contrast and draw bold in bright colors
