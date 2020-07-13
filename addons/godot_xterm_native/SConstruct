@@ -30,8 +30,8 @@ if env['use_llvm']:
     env['CC'] = 'clang'
     env['CXX'] = 'clang++'
 else:
-    env['CC'] = '/home/leroy/.nix-profile/bin/gcc'
-    env['CXX'] = '/home/leroy/.nix-profile/bin/g++'
+    env['CC'] = 'gcc'
+    env['CXX'] = 'g++'
 
 if env['p'] != '':
     env['platform'] = env['p']
